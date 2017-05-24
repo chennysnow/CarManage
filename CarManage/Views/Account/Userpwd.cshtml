@@ -1,0 +1,92 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="~/assets/i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="~/assets/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="A UI" />
+    <link rel="stylesheet" href="~/assets/css/amazeui.min.css" />
+    <link rel="stylesheet" href="~/assets/css/admin.css">
+    <link rel="stylesheet" href="~/assets/css/app.css">
+</head>
+
+<body data-type="generalComponents">
+
+    <div class="tpl-page-container">
+        <div class="tpl-content-wrapper1">
+            <div class="tpl-portlet-components">
+                <div class="tpl-block">
+
+                    <div class="am-g">
+
+
+                        <div class="tpl-form-body tpl-form-line">
+@if(ViewBag.ret!=1){
+                            <form class="am-form tpl-form-line-form " method="post" action="/Account/Userpwd">
+                                @Html.AntiForgeryToken()
+                                    <div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label">原来密码 </label>
+                                        <div class="am-u-sm-9">
+                                            <input type="password" class="tpl-form-input" id="Password" name="Password" placeholder="请输入原来密码">
+                                            <small></small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label">新的密码 </label>
+                                        <div class="am-u-sm-9">
+                                            <input type="password" class="tpl-form-input" id="NewPassword" name="NewPassword" placeholder="请输入新的密码">
+                                            <small>新的密码</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label">校验密码</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="password" class="tpl-form-input" id="ChkPassword" name="ChkPassword" placeholder="请输入校验密码">
+                                            <small>请填写校验密码。</small>
+                                        </div>
+                                    </div>
+
+                                <div class="am-form-group">
+                                    <label for="user-email" class="am-u-sm-3 am-form-label">发布时间 <span class="tpl-form-line-small-title">Time</span></label>
+                                    <div class="am-u-sm-9">
+                                        <input type="text" class="am-form-field tpl-form-no-bg" placeholder="发布时间" data-am-datepicker="" readonly />
+                                        <small>发布时间为必填</small>
+                                    </div>
+                                </div>
+
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                }else{
+                                <label for="user-name" class="am-u-sm-3 am-form-label">修改完成 </label>
+                            }
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/assets/js/jquery.min.js"></script>
+    <script src="~/assets/js/amazeui.min.js"></script>
+    <script src="~/assets/js/app.js"></script>
+</body>
+
+</html>

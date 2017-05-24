@@ -1,0 +1,193 @@
+﻿@using System.Collections.Generic
+@using SqlTools
+@using Entitys
+@model CarManage.Model.Modeldata
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section head
+{
+<script src="~/assets/js/echarts.min.js"></script>
+}
+@section index
+{
+
+
+<div class="tpl-content-wrapper1">
+    <div class="row">
+        <div class="am-u-md-12 am-u-sm-12 row-mb">
+            <div class="tpl-portlet">
+                <div class="tpl-portlet-title">
+                    <div class="tpl-caption font-green ">
+                        <i class="am-icon-cloud-download"></i>
+                        <span>新增数据统计</span>
+                    </div>
+                    <div class="actions">
+                        
+                    </div>
+                </div>
+
+                <!--此部分数据请在 js文件夹下中的 app.js 中的 “百度图表A” 处修改数据 插件使用的是 百度echarts-->
+                <div class="tpl-echarts" id="tpl-echarts-A">
+
+                </div>
+            </div>
+        </div>
+        <div class="am-u-md-12 am-u-sm-12 row-mb">
+            <div class="tpl-portlet">
+                <div class="tpl-portlet-title">
+                    <div class="tpl-caption font-red ">
+                        <i class="am-icon-bar-chart"></i>
+                        <span> 新增客户资料</span>
+                    </div>     
+                    <div class="actions">
+                        <ul class="actions-btn">
+                            <li class="purple-on" onclick="Getuserdata(0,this)">今天</li>
+                            <li class="green" onclick="Getuserdata(1,this)">昨天</li>
+                            <li class="dark" onclick="Getuserdata(2,this)">前天</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tpl-scrollable">
+                    <div class="number-stats">
+                        <div class="stat-number am-fl am-u-md-6">
+                            <div class="title am-text-right"> Total </div>
+                            <div class="number am-text-right am-text-warning" id="nums"> 2 </div>
+                        </div>
+                     </div>
+
+                    <table class="am-table tpl-table">
+                        <thead>
+                            <tr class="tpl-table-uppercase">
+                                <th>名称</th>
+                                <th>编号</th>
+                                <th>短号</th>
+                                <th>手机</th>
+                                <th>地址</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userdata">
+
+                            <tr>
+                               
+                                <td>
+                                    <img src="/assets/img/user01.png" alt="" class="user-pic">
+                                    <a class="user-name" href="###"></a>
+                                </td>
+                                <td></td>
+                                <td class="font-green bold"></td>
+                                <td></td>
+                                <td ></td>
+
+                            </tr>
+                             
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+@section Scripts
+{
+<script type="text/javascript">
+    $(function () {
+        pageData['index']();
+        Getuserdata(0);
+    });
+
+    var pageData = {
+        // ===============================================
+        // 首页
+        // ===============================================
+        'index': function indexData() {
+            // document.addEventListener('touchmove', function(e) { e.preventDefault(); }, false);
+
+            // ==========================
+            // 百度图表A http://echarts.baidu.com/
+            // ==========================
+
+            var echartsA = echarts.init(document.getElementById('tpl-echarts-A'));
+            option = {
+
+                tooltip: {
+                    trigger: 'axis',
+                },
+                legend: {
+                    data: ['增加量']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: [{
+                    type: 'category',
+                    boundaryGap: true,
+                    data: @Html.Raw(Model.tmp)
+                }],
+
+                yAxis: [{
+                    type: 'value'
+                }],
+                series: [{
+                    name: '记录',
+                    type: 'line',
+                    stack: '总量',
+                    areaStyle: { normal: {} },
+                    data: @Html.Raw(Model.tmp1),
+                    itemStyle: {
+                        normal: {
+                            color: '#59aea2'
+                        },
+                        emphasis: {
+
+                        }
+                    }
+                }
+                ]
+            };
+            echartsA.setOption(option);
+        }
+    }
+    function Getuserdata(d, dom) {
+        var cn;
+        if (typeof dom != "undefined") {
+            cn = $("ul.actions-btn>li[class$='on'");
+            if (cn.length > 0) {
+                cn.each(function (i, dom1) {
+                    var n = $(dom1).attr("class");
+                    var nc = n.replace("-on", "")
+                    $(dom1).attr("class", nc);
+                });
+            }
+            var cname = $(dom).attr("class");
+            $(dom).attr("class", cname + "-on");
+        }
+        $.get("/manage/getuserdata/" + d, function (da) {
+            var data = JSON.parse(da);
+            var text = "";
+            $("#nums").html(data.length);
+            
+            for(var i in data){
+                text += '<tr><td>\
+                                    <img src="/assets/img/user01.png" alt="" class="user-pic">\
+                                    <a class="user-name" href="###">'+data[i].CompanyName+'</a>\
+                                </td>\
+                                <td>'+ data[i].ShopNum +'</td>\
+                                <td class="font-green bold">'+ data[i].PhoneShopNum +'</td>\
+                                <td>'+ data[i].PhoneNumber +'</td>\
+                                <td >'+ data[i].CompanyAddress +'</td>\
+                            </tr>';
+            }
+            $("#userdata").html("").append(text);
+        });
+
+    }
+</script>
+
+
+
+}
